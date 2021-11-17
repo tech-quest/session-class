@@ -2,7 +2,6 @@
 require_once(__DIR__ . '/../dao/UserDao.php');
 require_once(__DIR__ . '/../utils/redirect.php');
 require_once(__DIR__ . '/../utils/Session.php');
-require_once(__DIR__ . '/../utils/SessionKey.php');
 
 $mail = filter_input(INPUT_POST, 'mail');
 $password = filter_input(INPUT_POST, 'password');
@@ -25,6 +24,5 @@ $formInputs = [
     'userId' => $member['id'],
     'userName' => $member['user_name']
 ];
-$formInputsKey = new SessionKey(SessionKey::FORM_INPUTS_KEY);
-$session->set($formInputsKey, $formInputs);
+$session->setFormInputs($formInputs);
 redirect("../index.php");

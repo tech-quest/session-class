@@ -1,14 +1,19 @@
 <?php
-require_once(__DIR__ . '/../utils/SessionKey.php');
 
 /**
  * セッション情報($_SESSION)をカプセル化したシングルトンクラス
  */
 final class Session
 {
+	/**
+	 * エラーメッセージ格納用のkey
+	 */
+	private const ERROR_KEY = 'errors';
+	private const FORM_INPUTS_KEY = 'formInputs';
+	private const MESSAGE_KEY = 'message';
 	private static $instance;
 
-	// シングルトンクラスはnewさせないｎのｄでのでprivateｎにｓすｒる
+	// シングルトンクラスはnewさせないのでprivateにする
 	private function __construct()
 	{
 	}
@@ -34,48 +39,48 @@ final class Session
 
 	public function appendError(string $errorMessage): void
 	{
-		$_SESSION[SessionKey::ERROR_KEY][] = $errorMessage;
+		$_SESSION[self::ERROR_KEY][] = $errorMessage;
 	}
 
 	public function popAllErrors(): array
 	{
-		$errors = $_SESSION[SessionKey::ERROR_KEY] ?? [];
-		$erorrKey = new SessionKey(SessionKey::ERROR_KEY);
-		$this->clear($erorrKey);
+		$errors = $_SESSION[self::ERROR_KEY] ?? [];
+		$this->clear(self::ERROR_KEY);
 		return $errors;
 	}
 
 	public function existsErrors(): bool
 	{
-		return !empty($_SESSION[SessionKey::ERROR_KEY]);
+		return !empty($_SESSION[self::ERROR_KEY]);
 	}
 
-	public function clear(SessionKey $sessionKey): void
+	public function clear(string $sessionKey): void
 	{
-		unset($_SESSION[$sessionKey->value()]);
+		unset($_SESSION[$sessionKey]);
 	}
 
 
-	public function set(SessionKey $sessionKey, $value): void
+	public function setFormInputs(array $formInputs): void
 	{
-		$_SESSION[$sessionKey->value()] = $value;
+		foreach ($formInputs as $key => $formInput) {
+			$_SESSION[self::FORM_INPUTS_KEY][$key] = $formInput;
+		}
 	}
 
 	public function getFormInputs(): array
 	{
-		return $_SESSION[SessionKey::FORM_INPUTS_KEY] ?? [];
+		return $_SESSION[self::FORM_INPUTS_KEY] ?? [];
 	}
 
-	public function setMessage(SessionKey $sessionKey, $message): void
+	public function setMessage($message): void
 	{
-		$_SESSION[$sessionKey->value()] = $message;
+		$_SESSION[self::MESSAGE_KEY] = $message;
 	}
 
 	public function getMessage(): string
 	{
-		$message = $_SESSION[SessionKey::MESSAGE_KEY] ?? "";
-		$messageKey = new SessionKey(SessionKey::MESSAGE_KEY);
-		$this->clear($messageKey);
+		$message = $_SESSION[self::MESSAGE_KEY] ?? "";
+		$this->clear(self::MESSAGE_KEY);
 		return $message;
 	}
 }
