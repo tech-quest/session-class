@@ -1,9 +1,9 @@
 <?php
-require_once __DIR__ . '/../Lib/pdoInit.php';
-require_once __DIR__ . '/../Lib/findUserByMail.php';
-require_once __DIR__ . '/../Lib/createUser.php';
-require_once __DIR__ . '/../Lib/redirect.php';
-require_once __DIR__ . '/../Lib/Session.php';
+require_once __DIR__ . '/../../app/Lib/pdoInit.php';
+require_once __DIR__ . '/../../app/Lib/findUserByMail.php';
+require_once __DIR__ . '/../../app/Lib/createUser.php';
+require_once __DIR__ . '/../../app/Lib/redirect.php';
+require_once __DIR__ . '/../../app/Lib/Session.php';
 
 $mail = filter_input(INPUT_POST, 'mail');
 $userName = filter_input(INPUT_POST, 'userName');
