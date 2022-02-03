@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/../utils/session.php');
+require_once(__DIR__ . '/../Lib/Session.php');
 
 session_start();
 
